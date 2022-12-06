@@ -1,22 +1,13 @@
 from typing import Union, List, Dict
+from .jobs import read
 
 
 def get_max_salary(path: str) -> int:
-    """Get the maximum salary of all jobs
+    data = read(path)
+    return max(list(set([job["max_salary"] for job in data])))
 
-    Must call `read`
 
-    Parameters
-    ----------
-    path : str
-        Must be passed to `read`
-
-    Returns
-    -------
-    int
-        The maximum salary paid out of all job opportunities
-    """
-    raise NotImplementedError
+print(get_max_salary('data/jobs.csv'))
 
 
 def get_min_salary(path: str) -> int:
