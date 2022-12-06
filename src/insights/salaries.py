@@ -4,10 +4,11 @@ from .jobs import read
 
 def get_max_salary(path: str) -> int:
     data = read(path)
-    return max(list(set([job["max_salary"] for job in data])))
-
-
-print(get_max_salary('data/jobs.csv'))
+    return max(
+        list(
+            [int(job["max_salary"]) for job in data if job["max_salary"] != ""]
+        )
+    )
 
 
 def get_min_salary(path: str) -> int:
@@ -55,8 +56,7 @@ def matches_salary_range(job: Dict, salary: Union[int, str]) -> bool:
 
 
 def filter_by_salary_range(
-    jobs: List[dict],
-    salary: Union[str, int]
+    jobs: List[dict], salary: Union[str, int]
 ) -> List[Dict]:
     """Filters a list of jobs by salary range
 
