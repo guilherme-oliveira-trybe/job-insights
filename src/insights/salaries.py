@@ -6,7 +6,11 @@ def get_max_salary(path: str) -> int:
     data = read(path)
     return max(
         list(
-            [int(job["max_salary"]) for job in data if job["max_salary"] != ""]
+            [
+                int(job["max_salary"])
+                for job in data
+                if job["max_salary"].isdigit()
+            ]
         )
     )
 
