@@ -18,42 +18,38 @@ def get_min_salary(path: str) -> int:
 
 def check_params(job: Dict, salary: Union[int, str]) -> bool:
     if "min_salary" not in job or "max_salary" not in job:
-        return False
+        raise ValueError
 
-    if salary == str and not salary.isdigit():
-        return False
+    min_salary = str(job["min_salary"])
+    max_salary = str(job["max_salary"])
 
-    if int(job["min_salary"]) > int(job["max_salary"]):
-        return False
+    if not max_salary.isnumeric() or not min_salary.isnumeric():
+        raise ValueError
 
-    return True
+    if int(min_salary) > int(max_salary):
+        raise ValueError
+
+    if not str(salary).lstrip("-").isnumeric():
+        raise ValueError
 
 
 # ajuda na monitoria para solução do requisito
 def matches_salary_range(job: Dict, salary: Union[int, str]) -> bool:
     try:
-        if not check_params(job, salary):
-            raise ValueError
+        check_params(job, salary)
         return int(job["min_salary"]) <= int(salary) <= int(job["max_salary"])
-    except TypeError:
-        raise ValueError
+    except ValueError:
+        raise
 
 
 def filter_by_salary_range(
     jobs: List[dict], salary: Union[str, int]
 ) -> List[Dict]:
-    """Filters a list of jobs by salary range
-
-    Parameters
-    ----------
-    jobs : list
-        The jobs to be filtered
-    salary : int
-        The salary to be used as filter
-
-    Returns
-    -------
-    list
-        Jobs whose salary range contains `salary`
-    """
-    raise NotImplementedError
+    jobs_list = []
+    for job in jobs:
+        try:
+            if matches_salary_range(job, salary):
+                jobs_list.append(job)
+        except ValueError as error:
+            print(error)
+    return jobs_list
